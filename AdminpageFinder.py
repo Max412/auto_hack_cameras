@@ -96,7 +96,7 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
    try:
     user = None
     password = None
-    file = open(f'camera_{ipi}.ini', 'r')
+    file = open(f'camera_{ipi}.ini', 'rb')
 
     try:
      data = file.read().replace('\x00', ' ')
