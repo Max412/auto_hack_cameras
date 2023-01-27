@@ -4,6 +4,8 @@ from requests import session
 from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
 
+os.system('cls || clear')
+          
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
 except urllib.error.URLError:
