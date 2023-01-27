@@ -44,20 +44,20 @@ ips = ['187.39.115.243']
 
 def st():
 
- try:
-  results = api.search('realm="GoAhead", domain=":81"')
- except shodan.exception.APIError:
-  #os.remove(r'C:\Windows\Temp\te.config')
-  input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
-  exit()
+ # try:
+ #  results = api.search('realm="GoAhead", domain=":81"')
+ # except shodan.exception.APIError:
+ #  #os.remove(r'C:\Windows\Temp\te.config')
+ #  input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
+ #  exit()
  
- #ips.clear()
- for result in results['matches']:
-  ips.append(format(result['ip_str']))
-  # with open('assad.txt', 'a+') as e:
-  #   e.write(format(result['ip_str'])+'\n')
-  ka = result['location']
-  locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
+ # #ips.clear()
+ # for result in results['matches']:
+ #  ips.append(format(result['ip_str']))
+ #  # with open('assad.txt', 'a+') as e:
+ #  #   e.write(format(result['ip_str'])+'\n')
+ #  ka = result['location']
+ #  locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
 
  for ip in ips:
   try:
