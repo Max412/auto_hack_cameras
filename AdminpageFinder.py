@@ -101,7 +101,7 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
     file = open(f'camera_{ipi}.ini', 'r')
 
     try:
-     data = file.read().replace('\x00', ' ')
+     data = file.read().replace('\x00', ' ').replace('\0xb4', ' ')
      words = data.split()
     except Exception as r:
      print(r)
