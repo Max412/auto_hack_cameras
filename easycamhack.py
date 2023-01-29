@@ -121,7 +121,7 @@ if len(num_of_vulnerable) >= int('1'):
    try:
     user = None
     password = None
-    file = open(f'camera_{ipi}.ini', 'r', encoding='ANSI')
+    file = open(f'camera_{ipi}.ini', 'r', encoding='latin-1')
 
     try:
      data = file.read().replace('\x00', ' ')
