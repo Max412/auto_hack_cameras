@@ -7,7 +7,7 @@ from progress.bar import IncrementalBar
 from collections import Counter
 from prettytable import PrettyTable
 
-os.system('clear || cls')
+os.system('cls')
 
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
@@ -98,7 +98,7 @@ print(f'Devices tested: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
 
 
 
-th = ['IP', 'USERNAME', 'PASSWORD']
+th = ['IP', 'PORT', 'USERNAME', 'PASSWORD']
 td = []
 
 
@@ -139,6 +139,7 @@ if len(num_of_vulnerable) >= int('1'):
        #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
        td.append(ipi)
+       td.append('81')
        td.append(words[i])
        td.append(words[i+1])
        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
@@ -172,7 +173,5 @@ if len(num_of_vulnerable) >= int('1'):
     table.add_row(td_data[:columns])
     td_data = td_data[columns:]
  print(table)
- exit()
 else:
  print("No vulnerable devices was found!")
- exit()
