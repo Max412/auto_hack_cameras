@@ -172,7 +172,7 @@ if len(num_of_vulnerable) >= int('1'):
     table.add_row(td_data[:columns])
     td_data = td_data[columns:]
  print(table)
+ exit()
 else:
  print("No vulnerable devices was found!")
-
-input('\n')
+ exit()
