@@ -7,7 +7,7 @@ from progress.bar import IncrementalBar
 from collections import Counter
 from prettytable import PrettyTable
 
-os.system('cls')
+os.system('clear || cls')
 
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
