@@ -145,7 +145,7 @@ if len(num_of_vulnerable) >= int('1'):
        raz += 1
        #print(asq)
        bar.next()
-       #break
+       break
       #raz += 1
       #tree.insert('', tk.END, values=(ipi, user, password))
      except Exception as e:
