@@ -174,4 +174,4 @@ if len(num_of_vulnerable) >= int('1'):
     td_data = td_data[columns:]
  print(table, '\n')
 else:
- print("No vulnerable devices was found!"\n)
+ print("No vulnerable devices was found!\n")
