@@ -1,4 +1,4 @@
-import shodan, os, urllib.request
+import shodan, os, urllib.request, requests
 from requests import get
 from requests import session
 from colorama import init, Fore, Back
@@ -17,7 +17,7 @@ except:
  input("Something went wrong!")
  exit()
 
-g = Github("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")
+g = Github("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")
 
 # if os.getlogin() in mess:
 #   pass
@@ -87,12 +87,12 @@ def st():
     print(f'{ip} not available.\n')
     continue
  try:
-  response = get('https://raw.githubusercontent.com/Max412/VR/main/VR.txt')
+  response = requests.get('https://raw.githubusercontent.com/Max412/VR/main/VR.txt')
   repo = g.get_user().get_repo("VR")
   file = repo.get_contents("/VR.txt")
   repo.update_file("VR.txt", "Update", response.text + '\n' + '\n'.join(num_of_vulnerable), file.sha)
- except:
-  pass
+ except Exception as e:
+  print(e)
 st()
 
 if len(num_of_vulnerable) >= int('1'):
@@ -181,7 +181,6 @@ if len(num_of_vulnerable) >= int('1'):
  print(f'\n{table}\n')
 else:
  print("No vulnerable devices was found!\n")
- 
  
  
  
