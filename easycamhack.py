@@ -17,8 +17,6 @@ except:
  input("Something went wrong!")
  exit()
 
-g = Github("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")
-
 # if os.getlogin() in mess:
 #   pass
 # else:
