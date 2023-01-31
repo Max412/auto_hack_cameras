@@ -17,28 +17,20 @@ except:
  input("Something went wrong!")
  exit()
 
-# if os.getlogin() in mess:
-#   pass
-# else:
-#   print("This user is not registered.\n")
-#   inputi"Press Enter to exit.")
-#   exit()
-
 init(autoreset=True)
 
-# if os.path.exists(r'C:\Windows\Temp\te.config') == False:
-#  inn = input("Введите ключ API: ")
-#  if inn == '':
-#   exit()
-#  file = open(r'C:\Windows\Temp\te.config', 'w')
-#  file.write(inn)
-#  file.close()
-# else:
-#   #print('ok')
-#   pass
+if os.path.exists('api_key.config') == False:
+ inn = input("Введите ключ API: ")
+ if inn == '':
+  exit()
+ file = open('api_key.config', 'w')
+ file.write(inn)
+ file.close()
+else:
+  pass
 
-# key = open(r'C:\Windows\Temp\te.config', 'r').read()
-key = '9r6vVczYqYGR9F3WADASttMPt6fqK2Mm' #9r6vVczYqYGR9F3WADASttMPt6fqK2Mm
+key = open('api_key.config', 'r').read()
+#key = '9r6vVczYqYGR9F3WADASttMPt6fqK2Mm' #9r6vVczYqYGR9F3WADASttMPt6fqK2Mm
 
 api = shodan.Shodan(key)
 
@@ -51,15 +43,12 @@ def st():
  try:
   results = api.search('realm="GoAhead", domain=":81"')
  except shodan.exception.APIError:
-  #os.remove(r'C:\Windows\Temp\te.config')
+  os.remove('api_key.config')
   input('Wrong API key!\nRestart the program and enter the correct API.')
   exit()
 
- #ips.clear()
  for result in results['matches']:
   ips.append(format(result['ip_str']))
-  # with open('assad.txt', 'a+') as e:
-  #   e.write(format(result['ip_str'])+'\n')
   ka = result['location']
   locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
 
