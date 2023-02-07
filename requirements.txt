@@ -1,4 +1,3 @@
 shodan
 progress
 prettytable
-pygithub
