@@ -105,6 +105,7 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(ipi)
         td.append(words[i])
         td.append(words[i+1])
+        os.remove(f'camera_{ip}.ini')
         raz += 1
         bar.next()
         break
@@ -114,6 +115,7 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(ipi)
         td.append(words[i])
         td.append('')
+        os.remove(f'camera_{ip}.ini')
         bar.next()
         break
       except Exception as e:
