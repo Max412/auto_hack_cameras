@@ -109,7 +109,10 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(words[i+1])
         td.append(ad.country)
         file.close()
-        os.remove(f'camera_{ipi}.ini')
+        try:
+          os.remove(f'camera_{ipi}.ini')
+        except:
+          pass
         bar.next()
 
        request = get(f'http://{ipi}:81', timeout = 10, verify = False, auth = HTTPDigestAuth(words[i], ''))
@@ -119,7 +122,10 @@ if len(num_of_vulnerable) >= int('1'):
         td.append('')
         td.append(ad.country)
         file.close()
-        os.remove(f'camera_{ipi}.ini')
+        try:
+          os.remove(f'camera_{ipi}.ini')
+        except:
+          pass
         bar.next()
       except Exception as e:
         print(e)
