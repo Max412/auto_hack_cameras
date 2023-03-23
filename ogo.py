@@ -58,7 +58,6 @@ if os.path.exists('api_key.config') == False:
       exit()
     except:
       print(Fore.LIGHTRED_EX + "Wrong API key! Try again.\n")
-      #os.system('cls')
 else:
   conf = configparser.RawConfigParser()    
   conf.read("api_key.config", encoding='utf-8')
@@ -84,7 +83,7 @@ def custom(ip):
       #os.system('cls || clear')
       break
     except KeyboardInterrupt:
-      print("\nProgram stopped.")
+      print(Fore.LIGHTRED_EX + "\nProgram stopped.")
       exit()
     except:
       print("Wrong API key! Try again.\n")
@@ -118,7 +117,7 @@ def custom(ip):
      num_of_vulnerable.append(ip)
      print(Fore.LIGHTGREEN_EX + 'Accessed\n')
    except KeyboardInterrupt:
-    print('\nProgram stopped.')
+    print(Fore.LIGHTRED_EX + '\nProgram stopped.')
     exit()
    except Exception as _:
     print(f'{ip} not available.')
@@ -143,7 +142,7 @@ def custom(ip):
       data = file.read().replace('\x00', ' ')
       words = data.split()
      except KeyboardInterrupt:
-      print('\nProgram stopped.')
+      print(Fore.LIGHTRED_EX + '\nProgram stopped.')
       exit()
      except:
       print('\nSomething went wrong.')
@@ -162,7 +161,7 @@ def custom(ip):
         try:
           os.remove(f'camera_{ipi}.ini')
         except KeyboardInterrupt:
-          print('\nProgram stopped.')
+          print(Fore.LIGHTRED_EX + '\nProgram stopped.')
           exit()
         except:
           pass
@@ -179,19 +178,19 @@ def custom(ip):
         try:
           os.remove(f'camera_{ipi}.ini')
         except KeyboardInterrupt:
-          print('\nProgram stopped.')
+          print(Fore.LIGHTRED_EX + '\nProgram stopped.')
           exit()
         except:
           pass
         bar.next()
       except KeyboardInterrupt:
-        print('\nProgram stopped.')
+        print(Fore.LIGHTRED_EX + '\nProgram stopped.')
         exit()
       except Exception as e:
         print(e)
         continue
     except KeyboardInterrupt:
-     print('\nProgram stopped.')
+     print(Fore.LIGHTRED_EX + '\nProgram stopped.')
      exit()
     except Exception as e:
      print(e)
@@ -256,10 +255,10 @@ else:
          print(i)
          pass
     except KeyboardInterrupt:
-        print("\nProgram stopped.")
+        print(Fore.LIGHTRED_EX + "\nProgram stopped.")
         exit()
     except Exception as e:
-        print("Wrong API key! Try again.", e)
+        print("\nWrong API key! Try again.\n")
         exit()
 
 #os.system('clear || cls')
@@ -270,7 +269,7 @@ except urllib.error.URLError:
  print("Check your internet connection!")
  exit()
 except KeyboardInterrupt:
- print("\nProgram stopped.")
+ print(Fore.LIGHTRED_EX + "\nProgram stopped.")
  exit()
 except:
  print("Something went wrong!")
@@ -310,6 +309,7 @@ api = shodan.Shodan(key)
 
 num_of_vulnerable = []
 ips = []
+terminated = False
 
 def st():
 
@@ -320,7 +320,7 @@ def st():
   print('Wrong API key!\nRestart the program and enter the correct API.')
   exit()
  except KeyboardInterrupt:
-  print("\nProgram stopped.")
+  print(Fore.LIGHTRED_EX + "\nProgram stopped.")
   exit()
 
  for result in results['matches']:
@@ -342,7 +342,9 @@ def st():
     num_of_vulnerable.append(ip)
     print(Fore.LIGHTGREEN_EX + 'Accessed\n')
   except KeyboardInterrupt:
-    print("\n")
+    print(Fore.LIGHTRED_EX + '\nProgram stopped.')
+    global terminated
+    terminated = True
     break
     #exit()
   except:
@@ -373,10 +375,10 @@ if len(num_of_vulnerable) >= int('1'):
       data = file.read().replace('\x00', ' ')
       words = data.split()
      except KeyboardInterrupt:
-      print('\nProgram stopped.')
+      print(Fore.LIGHTRED_EX + '\nProgram stopped.')
       exit()
      except:
-      print('\nSomething went wrong.')
+      print(Fore.LIGHTRED_EX + '\nSomething went wrong.')
       exit()
 
      for i in range(len(words)-1):
@@ -393,7 +395,7 @@ if len(num_of_vulnerable) >= int('1'):
         try:
           os.remove(f'camera_{ipi}.ini')
         except KeyboardInterrupt:
-          print('\nProgram stopped.')
+          print(Fore.LIGHTRED_EX + '\nProgram stopped.')
           exit()
         except:
           pass
@@ -412,19 +414,19 @@ if len(num_of_vulnerable) >= int('1'):
         try:
           os.remove(f'camera_{ipi}.ini')
         except KeyboardInterrupt:
-          print('\nProgram stopped.')
+          print(Fore.LIGHTRED_EX + '\nProgram stopped.')
           exit()
         except:
           pass
         bar.next()
         break
       except KeyboardInterrupt:
-        print('\nProgram stopped.')
+        print(Fore.LIGHTRED_EX + '\nProgram stopped.')
         exit()
       except:
         continue
     except KeyboardInterrupt:
-     print('\nProgram stopped.')
+     print(Fore.LIGHTRED_EX + '\nProgram stopped.')
      exit()
     except:
      continue
@@ -439,6 +441,8 @@ if len(num_of_vulnerable) >= int('1'):
     table.add_row(td_data[:columns])
     td_data = td_data[columns:]
  print(f'\n{table}\n')
+elif terminated == True:
+ exit()
 else:
  taro = Fore.LIGHTRED_EX + str(len(num_of_vulnerable))
  print('Checked devices:', Fore.LIGHTCYAN_EX + str(len(list(set(ips)))))
