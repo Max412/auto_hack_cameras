@@ -1,3 +1,9 @@
+import os
+import json
+import shodan
+import argparse
+import configparser
+import urllib.request
 from geocoder import ip
 from requests import get
 from requests import session
